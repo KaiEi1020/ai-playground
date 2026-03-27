@@ -1,0 +1,71 @@
+:root {
+  --color-primary-dark: #420002;
+  --color-secondary: #a65757;
+  --color-action-red: #ff2361;
+  --color-action-red-dark: #ff004d;
+  --color-warm-bg: #fffaeb;
+  --color-warm-bg-light: #fff7e7;
+  --color-page-bg: #abf1f1;
+  --color-card-bg: #fffaeb;
+  --color-pink-bg: #ffe9eb;
+  --color-teal-dark: #003e4d;
+  --color-blue: #009dff;
+  --color-cyan: #86fbff;
+  --color-light-cyan: #b8f5ff;
+  --color-mint: #defff5;
+  --color-light-teal: #72b3b3;
+  --color-gray: #8a9699;
+  --color-orange-red: #ff3826;
+  --color-yellow: #fff423;
+  --color-soft-pink: #ff999d;
+  --color-peach: #ffbe99;
+  --color-light-pink: #ffacb8;
+
+  --radius-card: 24px;
+  --radius-feature: 12px;
+  --radius-button: 40px;
+  --radius-small: 8px;
+  --radius-tiny: 6px;
+
+  --font-primary: 'PingFang SC', -apple-system, 'Helvetica Neue', sans-serif;
+  --font-rounded: 'Alimama FangYuanTi VF', var(--font-primary);
+  --font-heavy: 'Alibaba PuHuiTi 2.0', var(--font-primary);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--color-page-bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

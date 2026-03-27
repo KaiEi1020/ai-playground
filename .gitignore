@@ -3,5 +3,6 @@ dist/
 .env
 *.db
 *.sqlite
+.DS_Store
 
 **/node_modules/
