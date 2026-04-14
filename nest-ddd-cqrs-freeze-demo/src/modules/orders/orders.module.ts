@@ -1,5 +1,6 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
+import { ProductsModule } from '../products/products.module';
 import { UsersModule } from '../users/users.module';
 import { OrdersController } from './api/orders.controller';
 import { CreateOrderHandler } from './application/handlers/create-order.handler';
@@ -8,6 +9,8 @@ import { StopOrderHandler } from './application/handlers/stop-order.handler';
 import { GetOrderHandler } from './application/query-handlers/get-order.handler';
 import { ListOrdersByUserHandler } from './application/query-handlers/list-orders-by-user.handler';
 import { ORDER_REPOSITORY } from './domain/repositories/order.repository';
+import { ORDER_CREATION_SERVICE } from './domain/services/order-creation.service';
+import { OrderCreationServiceImpl } from './domain/services/order-creation.service.impl';
 import { InMemoryOrderRepository } from './infrastructure/repositories/in-memory-order.repository';
 import { OrdersFacade } from './orders.facade';
 
@@ -19,7 +22,7 @@ const commandHandlers = [
 const queryHandlers = [GetOrderHandler, ListOrdersByUserHandler];
 
 @Module({
-  imports: [CqrsModule, forwardRef(() => UsersModule)],
+  imports: [CqrsModule, forwardRef(() => UsersModule), ProductsModule],
   controllers: [OrdersController],
   providers: [
     ...commandHandlers,
@@ -29,6 +32,10 @@ const queryHandlers = [GetOrderHandler, ListOrdersByUserHandler];
     {
       provide: ORDER_REPOSITORY,
       useExisting: InMemoryOrderRepository,
+    },
+    {
+      provide: ORDER_CREATION_SERVICE,
+      useClass: OrderCreationServiceImpl,
     },
   ],
   exports: [ORDER_REPOSITORY, OrdersFacade],

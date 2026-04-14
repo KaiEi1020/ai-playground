@@ -8,6 +8,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Permission } from '../../auth/constants/permissions';
+import { CurrentUser } from '../../auth/decorators/current-user.decorator';
+import { RequirePermissions } from '../../auth/decorators/permissions.decorator';
+import { AuthenticatedUser } from '../../auth/types/authenticated-user.interface';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { CreateOrderCommand } from '../application/commands/create-order.command';
 import { StartOrderCommand } from '../application/commands/start-order.command';
@@ -22,22 +26,48 @@ export class OrdersController {
   ) {}
 
   @Post()
-  async createOrder(@Body() dto: CreateOrderDto) {
-    return this.commandBus.execute(new CreateOrderCommand(dto.userId, dto.id));
+  @RequirePermissions(Permission.ORDERS.CREATE)
+  async createOrder(
+    @Body() dto: CreateOrderDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.commandBus.execute(
+      new CreateOrderCommand(
+        dto.userId,
+        dto.items,
+        dto.shippingAddress,
+        dto.id,
+        user.permissions,
+      ),
+    );
   }
 
   @Post(':id/start')
-  async startOrder(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.commandBus.execute(new StartOrderCommand(id));
+  @RequirePermissions(Permission.ORDERS.START)
+  async startOrder(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.commandBus.execute(new StartOrderCommand(id, user.permissions));
   }
 
   @Get(':id')
-  async getOrder(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.queryBus.execute(new GetOrderQuery(id));
+  @RequirePermissions(Permission.ORDERS.READ)
+  async getOrder(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.queryBus.execute(new GetOrderQuery(id, user.permissions));
   }
 
   @Get()
-  async listOrders(@Query('userId', new ParseUUIDPipe()) userId: string) {
-    return this.queryBus.execute(new ListOrdersByUserQuery(userId));
+  @RequirePermissions(Permission.ORDERS.READ)
+  async listOrders(
+    @Query('userId', new ParseUUIDPipe()) userId: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.queryBus.execute(
+      new ListOrdersByUserQuery(userId, user.permissions),
+    );
   }
 }

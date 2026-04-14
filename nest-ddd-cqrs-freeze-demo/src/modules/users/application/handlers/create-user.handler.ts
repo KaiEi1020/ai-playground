@@ -1,7 +1,9 @@
+import { Inject } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import { Permission } from '../../../auth/constants/permissions';
+import { ensurePermission } from '../../../auth/utils/authorization.util';
 import { CreateUserCommand } from '../commands/create-user.command';
 import { UserAggregate } from '../../domain/aggregates/user.aggregate';
-import { Inject } from '@nestjs/common';
 import {
   USER_REPOSITORY,
   UserRepository,
@@ -16,6 +18,8 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   ) {}
 
   async execute(command: CreateUserCommand) {
+    ensurePermission(command.actorPermissions, Permission.USERS.CREATE);
+
     const user = this.eventPublisher.mergeObjectContext(
       UserAggregate.create(command.userId),
     );

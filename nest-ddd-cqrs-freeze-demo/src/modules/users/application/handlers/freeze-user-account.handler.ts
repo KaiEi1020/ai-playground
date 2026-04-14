@@ -4,6 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import { Permission } from '../../../auth/constants/permissions';
+import { ensurePermission } from '../../../auth/utils/authorization.util';
 import { DomainException } from '../../../../common/domain.exception';
 import { FreezeUserAccountCommand } from '../commands/freeze-user-account.command';
 import {
@@ -22,6 +24,8 @@ export class FreezeUserAccountHandler
   ) {}
 
   async execute(command: FreezeUserAccountCommand) {
+    ensurePermission(command.actorPermissions, Permission.USERS.FREEZE);
+
     const existingUser = await this.userRepository.findById(command.userId);
     if (!existingUser) {
       throw new NotFoundException(`User ${command.userId} not found.`);

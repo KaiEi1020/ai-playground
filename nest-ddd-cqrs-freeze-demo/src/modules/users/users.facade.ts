@@ -1,4 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Permission } from '../auth/constants/permissions';
+import { ensurePermission } from '../auth/utils/authorization.util';
 import {
   USER_REPOSITORY,
   UserRepository,
@@ -11,7 +13,9 @@ export class UserFacade {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async getUser(id: string) {
+  async getUser(id: string, actorPermissions: string[]) {
+    ensurePermission(actorPermissions, Permission.USERS.READ);
+
     const user = await this.userRepository.findById(id);
     if (!user) {
       throw new NotFoundException(`User ${id} not found.`);

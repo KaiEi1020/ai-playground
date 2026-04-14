@@ -4,6 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import { Permission } from '../../../auth/constants/permissions';
+import { ensurePermission } from '../../../auth/utils/authorization.util';
 import { DomainException } from '../../../../common/domain.exception';
 import { StartOrderCommand } from '../commands/start-order.command';
 import {
@@ -20,6 +22,8 @@ export class StartOrderHandler implements ICommandHandler<StartOrderCommand> {
   ) {}
 
   async execute(command: StartOrderCommand) {
+    ensurePermission(command.actorPermissions, Permission.ORDERS.START);
+
     const existingOrder = await this.orderRepository.findById(command.orderId);
     if (!existingOrder) {
       throw new NotFoundException(`Order ${command.orderId} not found.`);

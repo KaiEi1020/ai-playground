@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IEvent, Saga, ofType } from '@nestjs/cqrs';
 import { Observable, from } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { UserAccountFrozenEvent } from '../events/user-account-frozen.event';
+import { UserAccountFrozenEvent } from '../../domain/events/user-account-frozen.event';
 import { StopOrderCommand } from '../../../orders/application/commands/stop-order.command';
 import {
   ORDER_REPOSITORY,

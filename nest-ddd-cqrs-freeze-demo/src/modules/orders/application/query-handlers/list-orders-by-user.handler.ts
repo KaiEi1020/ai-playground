@@ -1,5 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { Permission } from '../../../auth/constants/permissions';
+import { ensurePermission } from '../../../auth/utils/authorization.util';
 import { ListOrdersByUserQuery } from '../queries/list-orders-by-user.query';
 import {
   ORDER_REPOSITORY,
@@ -16,6 +18,8 @@ export class ListOrdersByUserHandler
   ) {}
 
   async execute(query: ListOrdersByUserQuery) {
+    ensurePermission(query.actorPermissions, Permission.ORDERS.READ);
+
     const orders = await this.orderRepository.findByUserId(query.userId);
     return orders.map((order) => order.toJSON());
   }

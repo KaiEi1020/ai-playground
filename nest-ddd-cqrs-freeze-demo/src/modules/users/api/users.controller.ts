@@ -7,6 +7,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
+import { Permission } from '../../auth/constants/permissions';
+import { CurrentUser } from '../../auth/decorators/current-user.decorator';
+import { RequirePermissions } from '../../auth/decorators/permissions.decorator';
+import { AuthenticatedUser } from '../../auth/types/authenticated-user.interface';
 import { CreateUserCommand } from '../application/commands/create-user.command';
 import { FreezeUserAccountCommand } from '../application/commands/freeze-user-account.command';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,17 +24,33 @@ export class UsersController {
   ) {}
 
   @Post()
-  async createUser(@Body() dto: CreateUserDto) {
-    return this.commandBus.execute(new CreateUserCommand(dto.id));
+  @RequirePermissions(Permission.USERS.CREATE)
+  async createUser(
+    @Body() dto: CreateUserDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.commandBus.execute(
+      new CreateUserCommand(dto.id, user.permissions),
+    );
   }
 
   @Post(':id/freeze')
-  async freezeUser(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.commandBus.execute(new FreezeUserAccountCommand(id));
+  @RequirePermissions(Permission.USERS.FREEZE)
+  async freezeUser(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.commandBus.execute(
+      new FreezeUserAccountCommand(id, user.permissions),
+    );
   }
 
   @Get(':id')
-  async getUser(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.userFacade.getUser(id);
+  @RequirePermissions(Permission.USERS.READ)
+  async getUser(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.userFacade.getUser(id, user.permissions);
   }
 }

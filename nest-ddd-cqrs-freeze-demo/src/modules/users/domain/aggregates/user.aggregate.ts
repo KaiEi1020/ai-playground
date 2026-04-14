@@ -1,8 +1,8 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { randomUUID } from 'crypto';
 import { DomainException } from '../../../../common/domain.exception';
-import { UserAccountFrozenEvent } from '../../application/events/user-account-frozen.event';
-import { UserCreatedEvent } from '../../application/events/user-created.event';
+import { UserAccountFrozenEvent } from '../events/user-account-frozen.event';
+import { UserCreatedEvent } from '../events/user-created.event';
 
 export enum UserStatus {
   ACTIVE = 'ACTIVE',
