@@ -1,0 +1,52 @@
+{
+  "skill": "inventory-gross-margin-red-flags",
+  "version": "0.1.0",
+  "source_book": "手把手教你读财报 — 唐朝",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "毛利率突然提高",
+      "expected_behavior": "应激活 inventory-gross-margin-red-flags 并按步骤判断风险。",
+      "notes": "正面场景"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "存货大幅增长",
+      "expected_behavior": "应激活 inventory-gross-margin-red-flags 并要求财报证据。",
+      "notes": "正面场景"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "是不是压货美化利润",
+      "expected_behavior": "应激活 inventory-gross-margin-red-flags 并输出继续/排除判断。",
+      "notes": "正面场景"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "用户问库存周转管理软件",
+      "expected_behavior": "不应激活本 skill。",
+      "notes": "诱饵"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "用户问商品定价策略",
+      "expected_behavior": "不应激活本 skill。",
+      "notes": "诱饵"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "帮我看这家公司财报有没有明显问题，但我没有完整年报。",
+      "expected_behavior": "可激活，但必须先要求年报或关键科目数据。",
+      "notes": "边界"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "含应调用/不应调用/边界测试。"
+}
