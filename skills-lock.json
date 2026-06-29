@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "chinese-novelist": {
+      "source": "PenglongHuang/chinese-novelist-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "576fd97a6e478e93ee53edee2b2324d3292f8773523d183c70b255417c7e9b1a"
+    },
     "huashu-nuwa": {
       "source": "alchaincyf/nuwa-skill",
       "sourceType": "github",
