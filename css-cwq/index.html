@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSS cqw Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #14213d;
+      background: linear-gradient(135deg, #f8fafc, #e0f2fe);
+    }
+
+    main {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 6vw, 4.5rem);
+      letter-spacing: -0.06em;
+    }
+
+    .intro {
+      max-width: 760px;
+      margin: 0 0 26px;
+      color: #475569;
+      line-height: 1.7;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: #0f172a;
+      background: #dbeafe;
+    }
+
+    .demo {
+      display: grid;
+      grid-template-columns: 280px minmax(280px, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid rgb(15 23 42 / 0.12);
+      border-radius: 24px;
+      background: rgb(255 255 255 / 0.78);
+      box-shadow: 0 24px 70px rgb(15 23 42 / 0.10);
+      backdrop-filter: blur(14px);
+    }
+
+    .explain {
+      padding: 20px;
+    }
+
+    .explain h2,
+    .playground h2 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    .explain p,
+    .playground p {
+      margin: 0;
+      color: #64748b;
+      line-height: 1.65;
+    }
+
+    .playground {
+      min-width: 300px;
+      padding: 20px;
+      resize: horizontal;
+      overflow: auto;
+    }
+
+    .container {
+      container-type: inline-size;
+      margin-top: 18px;
+      padding: 18px;
+      border: 2px dashed #38bdf8;
+      border-radius: 20px;
+      background: #f8fafc;
+    }
+
+    .sample {
+      display: grid;
+      gap: 14px;
+      padding: 20px;
+      border-radius: 18px;
+      color: white;
+      background: linear-gradient(135deg, #0f172a, #2563eb);
+    }
+
+    .fluid-title {
+      margin: 0;
+      font-size: clamp(24px, 10cqw, 88px);
+      line-height: 0.95;
+      letter-spacing: -0.08em;
+    }
+
+    .fluid-text {
+      margin: 0;
+      font-size: clamp(14px, 3cqw, 28px);
+      line-height: 1.35;
+      color: #dbeafe;
+    }
+
+    .fluid-box {
+      width: 50cqw;
+      min-width: 120px;
+      max-width: 420px;
+      padding: 4cqw;
+      border-radius: 3cqw;
+      background: rgb(255 255 255 / 0.16);
+      font-size: clamp(13px, 2cqw, 20px);
+    }
+
+    .bad-example {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: 14px;
+    }
+
+    .bad-example strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 10cwq;
+    }
+
+    .unit-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .unit-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #eff6ff;
+      color: #1e3a8a;
+    }
+
+    @media (max-width: 760px) {
+      .demo {
+        grid-template-columns: 1fr;
+      }
+
+      .playground {
+        resize: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>CSS cqw 测试</h1>
+    <p class="intro">
+      CSS 里有效的是 <code>cqw</code>，不是 <code>cwq</code>。<code>1cqw</code> 等于查询容器宽度的 1%。拖动右侧面板宽度，标题、文字、盒子尺寸会跟着容器变化。
+    </p>
+
+    <section class="demo">
+      <aside class="panel explain">
+        <h2>Container Query Units</h2>
+        <p>先给父元素设置 <code>container-type: inline-size</code>，子元素就可以使用基于容器尺寸的单位。</p>
+        <ul class="unit-list">
+          <li><code>cqw</code><span>容器宽度 1%</span></li>
+          <li><code>cqh</code><span>容器高度 1%</span></li>
+          <li><code>cqi</code><span>inline 方向 1%</span></li>
+          <li><code>cqb</code><span>block 方向 1%</span></li>
+          <li><code>cqmin</code><span>较小边 1%</span></li>
+          <li><code>cqmax</code><span>较大边 1%</span></li>
+        </ul>
+      </aside>
+
+      <section class="panel playground">
+        <h2>拖动这里改变容器宽度</h2>
+        <p>下面的内容使用 <code>font-size: clamp(24px, 10cqw, 88px)</code>。</p>
+
+        <div class="container">
+          <div class="sample">
+            <h2 class="fluid-title">10cqw</h2>
+            <p class="fluid-text">这行文字是 <code>3cqw</code>，会按容器宽度缩放，而不是按浏览器窗口缩放。</p>
+            <div class="fluid-box">这个盒子宽度是 <code>50cqw</code>，内边距是 <code>4cqw</code>。</div>
+          </div>
+        </div>
+
+        <div class="bad-example">
+          <strong>font-size: 10cwq;</strong>
+          <span><code>cwq</code> 是无效单位，这条声明会被浏览器忽略。</span>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

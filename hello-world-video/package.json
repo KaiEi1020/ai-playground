@@ -5,7 +5,8 @@
   "scripts": {
     "start": "remotion studio",
     "render": "remotion render HelloWorld out/hello-world.mp4",
-    "render:article": "remotion render Article out/article.mp4"
+    "render:article": "remotion render Article out/article.mp4",
+    "render:news": "remotion render NewsVideo out/news-video.mp4"
   },
   "keywords": [],
   "author": "",

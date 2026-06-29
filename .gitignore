@@ -6,3 +6,7 @@ dist/
 .DS_Store
 
 **/node_modules/
+
+# News video agent generated files
+hello-world-video/src/data/news-video-data.generated.json
+hello-world-video/out/*.mp4
