@@ -5,6 +5,7 @@ dist/
 *.sqlite
 .DS_Store
 .worktrees/
+.playwright-mcp/
 
 **/node_modules/
 
